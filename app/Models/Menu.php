@@ -14,7 +14,7 @@ class Menu extends Model
     protected $fillable = [
         'name',
         'icon',
-        'controller','vhdtgfhfg',
+        'controller',
         'status',
         'view',
         'route',
