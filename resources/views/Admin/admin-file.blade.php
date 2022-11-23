@@ -32,12 +32,44 @@
     <!-- Page CSS -->
 
     <!-- Helpers -->
-    <script src="https://tool.hitinfotech.com/front/vendor/jquery/jquery.min.js"></script>
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('assets/js/config.js') }}"></script>
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    @yield('sub-script')
+    <style>
+        .bg-purple-lite {
+            color: rgb(105 108 255);
+            background-color: rgb(105 108 255 / 16%) !important;
+        }
+
+        .text-review {
+            color: rgb(193 193 0);
+        }
+
+        .custom-middel {
+            position: relative;
+            top: 50%;
+            transform: translate(0, -50%);
+        }
+
+        .custom-middel:hover{
+            transform: translateY(-51%) !important;
+        }
+        
+        .custom-middel:focus{
+            transform: translateY(-51%) !important;
+        }
+
+        .w-85{
+            width: 85% !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -73,10 +105,10 @@
 
                     @php
                     $menus = load_menus();
-                    
+
                     @endphp
                     @foreach ($menus as $key=>$menu)
-                    <li class="menu-item"  data-i18n="{{ $menu['route'] }}">
+                    <li class="menu-item" data-i18n="{{ $menu['route'] }}">
                         <a href="{{ route($menu['route_name']) }}" class="menu-link">
                             <i class="menu-icon tf-icons bx {{ $menu['icon'] }}"></i>
                             <div>{{ $menu['name'] }}</div>
@@ -84,14 +116,21 @@
                     </li>
                     @endforeach
 
-                    <li class="menu-item"  data-i18n="menu">
+                    <li class="menu-item" data-i18n="menu">
                         <a href="{{ route('admin.menu') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div>Menu</div>
                         </a>
                     </li>
 
-                    
+                    <li class="menu-item" data-i18n="log-out">
+                        <a href="{{ route('admin.logout') }}" class="menu-link">
+                        <i class='menu-icon tf-icons bx bx-log-out'></i>
+                            <div>Log Out</div>
+                        </a>
+                    </li>
+
+
                 </ul>
             </aside>
             <!-- / Menu -->
@@ -107,11 +146,12 @@
         </div>
     </div>
     <script>
-        $(function () { 
+        $(function() {
             tab = window.location.pathname.split('/')[4]
             tab = (tab == undefined) ? '' : tab;
-            $('li[data-i18n="'+tab+'"]').addClass('active')
+            $('li[data-i18n="' + tab + '"]').addClass('active')
         });
+        
     </script>
     <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>

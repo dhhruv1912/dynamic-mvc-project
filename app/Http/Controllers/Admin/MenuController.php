@@ -38,7 +38,6 @@ class MenuController extends Controller
                 'menu_route'  => 'required|unique:admin_menu,route',
                 'menu_route_name'  => 'required|unique:admin_menu,route_name',
             ]);
-            dd($validated->error);
             $menu = array(
                 'name' => $request->post('menu_name'),
                 'icon' => $request->post('menu_icon'),
@@ -50,9 +49,7 @@ class MenuController extends Controller
                 'group'  => $request->post('menu_route_group'),
             );
             // Add Route
-            $this_new_route = "// ".$menu['route_name'] ."-start \n";
-            $this_new_route .= "Route::any('/". $menu['route'] . "', '". $menu['controller'] . "@index')->name('". $menu['route_name'] . "');\n";
-            $this_new_route .= "// ".$menu['route_name'] ."-end \n";
+            $this_new_route = "Route::any('/". $menu['route'] . "', '". $menu['controller'] . "@index')->name('". $menu['route_name'] . "');\n";
             $this_new_route .= "//".$menu['group']."//\n";
             $web_route = file_get_contents(base_path() . '\routes\web.php');
             $web_route = str_replace('//'.$menu['group'].'//',$this_new_route,$web_route);
@@ -122,7 +119,19 @@ class MenuController extends Controller
                 'status' => $request->post('status'),
                 'view' => $request->post('view_file'),
                 'route'  => $request->post('menu_route'),
+                'route_name'  => $request->post('menu_route_name'),
+                'group'  => $request->post('menu_route_group'),
             );
+
+            // Update Route
+            $old_menu = Menu::where('id',$id)->get()->toArray();
+            $rouu = $old_menu[0]['route_name'];
+            $pattern  = "/Route.*?".$rouu."'\);/m";
+            $this_new_route = "Route::any('/". $menu['route'] . "', '". $menu['controller'] . "@index')->name('". $menu['route_name'] . "');";
+            $web_route = file_get_contents(base_path() . '\routes\web.php');
+            preg_match($pattern, $web_route,$this_route); 
+            $web_route = str_replace($this_route[0],$this_new_route,$web_route);
+            file_put_contents(base_path() . '\routes\web.php',$web_route);
             if (DB::table('admin_menu')->where('id', $id)->update($menu)) {
                 return redirect()->route('admin.menu')->with(['responce' => 'Menu SuccessFully Updated', 'alert_type' => 'primary']);
             } else {

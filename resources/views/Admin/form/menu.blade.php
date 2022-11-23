@@ -76,7 +76,7 @@ $group = (isset($menus)) ? $menus[0]['group'] : '';
                         <div>
                             <label for="menu_route" class="form-label">Web Path</label>
                             <div class="input-group">
-                            <input class="input-group-text form-control @error('menu_route') is-invalid @enderror" id="route_path" readonly value="https::/domain.com/" />
+                            <span class="input-group-text @error('menu_route') is-invalid @enderror" id="route_path">https::/domain.com/</span>
                                 <input type="text" class="form-control @error('menu_route') is-invalid @enderror" id="menu_route" name="menu_route" value="{{ ($id != '') ? $route : old('menu_route') }}">
                             </div>
                             <div id="menu_route_help" class="form-text">
@@ -103,32 +103,50 @@ $group = (isset($menus)) ? $menus[0]['group'] : '';
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card mb-4 shadow @error('menu_route_group') shadow-danger @enderror">
-                    <div class="card-body">
-                        <div>
-                            <label for="menu_route_group" class="form-label">Route Group</label>
-                            <select class="form-select @error('menu_route_group') is-invalid @enderror" id="menu_route_group" name="menu_route_group">
-                                <option value="new route" @if ( old('menu_route_group' )=='new route' ) selected @endif>None</option>
-                                <option value="new Admin route" @if ( old('menu_route_group' )=='new Admin route' ) selected @endif>Admin</option>
-                            </select>
-
-
-                            <div id="menu_route_group_help" class="form-text">
-                                We'll never share your details with anyone else.
-                            </div>
-                            <div id="menu_route_group_error" class="form-text text-danger">
+            @if (isset($menus)) 
+                <div class="col-md-6">
+                    <div class="card mb-4 shadow @error('menu_route_group') shadow-danger @enderror">
+                        <div class="card-body">
+                            <div>
+                                <label for="menu_route_group" class="form-label">Route Group</label>
+                                <input type="text" class="form-control @error('menu_route_group') is-invalid @enderror" readonly id="menu_route_group" name="menu_route_group" value="{{ $group }}">
+                                <div id="menu_route_group_help" class="form-text">
+                                    We'll never share your details with anyone else.
+                                </div>
+                                <div id="menu_route_group_error" class="form-text text-danger">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @else
+                <div class="col-md-6">
+                    <div class="card mb-4 shadow @error('menu_route_group') shadow-danger @enderror">
+                        <div class="card-body">
+                            <div>
+                                <label for="menu_route_group" class="form-label">Route Group</label>
+                                <select class="form-select @error('menu_route_group') is-invalid @enderror"  id="menu_route_group" name="menu_route_group">
+                                    <option value="new route" @if ( old('menu_route_group' )=='new route' ) selected @endif @if ($group == 'new route')  selected  @endif>None</option>
+                                    <option value="new Admin route" @if ( old('menu_route_group' )=='new Admin route' ) selected @endif @if ($group == 'new Admin route')  selected  @endif>Admin</option>
+                                </select>
+
+
+                                <div id="menu_route_group_help" class="form-text">
+                                    We'll never share your details with anyone else.
+                                </div>
+                                <div id="menu_route_group_error" class="form-text text-danger">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
             <div class="col-md-6">
                 <div class="card mb-4 shadow @error('menu_controller') shadow-danger @enderror">
                     <div class="card-body">
                         <div>
                             <label for="menu_controller" class="form-label">Controller</label>
-                            <input type="text" class="form-control @error('menu_controller') is-invalid @enderror" id="menu_controller" name="menu_controller" value="{{ ($id != '') ? $controller : old('menu_controller') }}">
+                            <input type="text" class="form-control @error('menu_controller') is-invalid @enderror" @if (isset($menus)) readonly @endif id="menu_controller" name="menu_controller" value="{{ ($id != '') ? $controller : old('menu_controller') }}">
                             <div id="menu_controller_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -143,7 +161,7 @@ $group = (isset($menus)) ? $menus[0]['group'] : '';
                     <div class="card-body">
                         <div>
                             <label for="view_file" class="form-label">View File</label>
-                            <input type="text" class="form-control @error('view_file') is-invalid @enderror" id="view_file" name="view_file" value="{{ ($id != '') ? $view : old('view_file') }}">
+                            <input type="text" class="form-control @error('view_file') is-invalid @enderror" @if (isset($menus)) readonly @endif id="view_file" name="view_file" value="{{ ($id != '') ? $view : old('view_file') }}">
                             <div id="view_file_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -160,7 +178,7 @@ $group = (isset($menus)) ? $menus[0]['group'] : '';
                             <label for="menu_status" class="form-label">Status</label>
                             <div class="form-check form-switch mb-2">
                                 <input type="hidden" name="status" value="0">
-                                <input class="form-check-input" type="checkbox" id="status" name="status" value="1">
+                                <input class="form-check-input" type="checkbox" @if ($status == '1') checked @endif id="status" name="status" value="1">
                                 <label class="form-check-label" for="status">Default switch checkbox input</label>
                             </div>
                             <div id="menu_status_help" class="form-text">
@@ -186,7 +204,7 @@ $group = (isset($menus)) ? $menus[0]['group'] : '';
 </div>
 <script>
     $(function() {
-        $('#route_path').val(window.location.origin + '/')
+        $('#route_path').text(window.location.origin + '/')
         $('#menu_icon').keyup(function() {
             val = $(this).val();
             $('.icon_preview i').removeClass().addClass('bx ' + val);
