@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::any('/', 'HomeController@index')->name('home');
+Route::any('/shop', 'ShopController@index')->name('front.shop');
+Route::post('/shop/filter', 'ShopController@filter')->name('front.filter');
 //new route//
 
 // Login
@@ -30,7 +32,14 @@ Route::group(['prefix' => 'Admin','middleware' => ['web','auth:admin']], functio
     Route::any('/product/delete/{id}', 'Admin\ProductController@delete_product')->name('admin.product_delete');
 
     Route::any('/setting', 'Admin\SettingController@index')->name('admin.setting');
-    Route::any('/setting/save', 'Admin\SettingController@save')->name('admin.setting.save');
-    //new Admin route//
+    Route::any('/setting/add', 'Admin\SettingController@add_setting')->name('admin.add_setting');
+    Route::any('/setting/save/{id}', 'Admin\SettingController@save')->name('admin.setting.save');
+    
+    Route::any('/category', 'Admin\CategoryController@index')->name('admin.category');
+    Route::any('/category/form/{id?}', 'Admin\CategoryController@load_form')->name('admin.category.form');
+    Route::any('/category/save/{id?}', 'Admin\CategoryController@save_form')->name('admin.category.save');
+    Route::any('/category/delete/{id}', 'Admin\CategoryController@delete')->name('admin.category.delete');
+//new Admin route//
+
 
 });

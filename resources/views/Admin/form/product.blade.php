@@ -1,8 +1,8 @@
 @extends('Admin.admin-file')
 
 @section('admin-section')
-
-@php
+<pre>
+    @php
 $product_id = (isset($product)) ? $product[0]['id'] : '';
 $product_name = (isset($product)) ? $product[0]['name'] : '';
 $product_desc = (isset($product)) ? $product[0]['desc'] : '';
@@ -23,7 +23,7 @@ $product_special = (isset($product)) ? $product[0]['spc'] : 0;
 $product_main_img = (isset($product)) ? $product[0]['mimg'] : '';
 $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
 @endphp
-
+</pre>
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Basic Inputs</h4>
 
@@ -56,7 +56,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="row">
                         <label for="product_name" class="col-form-label col-md-2">Product Name</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control @error('product_name') is-invalid @enderror" id="product_name" name="product_name" value="{{ old('product_name')  }}{{ $product_name }}">
+                            <input type="text" class="form-control @error('product_name') is-invalid @enderror" id="product_name" name="product_name" value="@error('product_name') old('product_name') @else {{ $product_name }} @endif">
                             <div id="product_name_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -81,7 +81,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="row">
                         <label for="product_tag" class="col-form-label col-md-2">Product Tag</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control @error('product_tag') is-invalid @enderror" id="product_tag" name="product_tag" value="{{ old('product_tag') }}{{ $product_tag }}">
+                            <input type="text" class="form-control @error('product_tag') is-invalid @enderror" id="product_tag" name="product_tag" value="@error('product_tag') old('product_tag') @else {{ $product_tag }} @endif">
                             <div id="product_tag_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -99,7 +99,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="card mb-4 shadow @error('product_model') shadow-danger @enderror">
                         <div class="card-body">
                             <label for="product_model" class="form-label">Product Model</label>
-                            <input type="text" class="form-control @error('product_model') is-invalid @enderror" id="product_model" name="product_model" value="{{ old('product_model') }}{{ $product_model }}">
+                            <input type="text" class="form-control @error('product_model') is-invalid @enderror" id="product_model" name="product_model" value="@error('product_model') old('product_model') @else {{ $product_model }} @endif">
                             <div id="product_model_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -112,7 +112,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="card mb-4 shadow @error('product_sku') shadow-danger @enderror">
                         <div class="card-body">
                             <label for="product_sku" class="form-label">Product SKU</label>
-                            <input type="text" class="form-control @error('product_sku') is-invalid @enderror" id="product_sku" name="product_sku" value="{{ old('product_sku') }}{{ $product_sku }}">
+                            <input type="text" class="form-control @error('product_sku') is-invalid @enderror" id="product_sku" name="product_sku" value="@error('product_sku') old('product_sku') @else {{ $product_sku }} @endif">
                             <div id="product_sku_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -125,7 +125,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="card mb-4 shadow @error('product_price') shadow-danger @enderror">
                         <div class="card-body">
                             <label for="product_price" class="form-label">Product Price</label>
-                            <input type="number" class="form-control @error('product_price') is-invalid @enderror" id="product_price" name="product_price" value="{{ old('product_price') }}{{ $product_price }}">
+                            <input type="text" class="form-control @error('product_price') is-invalid @enderror" id="product_price" name="product_price" value="@error('product_price') old('product_price') @else {{ $product_price }} @endif">
                             <div id="product_price_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -154,7 +154,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="card mb-4 shadow @error('product_quantity') shadow-danger @enderror">
                         <div class="card-body">
                             <label for="product_quantity" class="form-label">Product Quantity</label>
-                            <input type="number" class="form-control @error('product_quantity') is-invalid @enderror" id="product_quantity" name="product_quantity" value="{{ old('product_quantity') }}{{ $product_quantity }}">
+                            <input type="text" class="form-control @error('product_quantity') is-invalid @enderror" id="product_quantity" name="product_quantity" value="@error('product_quantity') old('product_quantity') @else {{ $product_quantity }} @endif">
                             <div id="product_quantity_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -167,7 +167,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="card mb-4 shadow @error('product_min_qty') shadow-danger @enderror">
                         <div class="card-body">
                             <label for="product_min_qty" class="form-label">Product Minium Stock Status</label>
-                            <input type="number" class="form-control @error('product_min_qty') is-invalid @enderror" id="product_min_qty" name="product_min_qty" value="{{ old('product_min_qty') }}{{ $product_min_qty }}">
+                            <input type="text" class="form-control @error('product_min_qty') is-invalid @enderror" id="product_min_qty" name="product_min_qty" value="@error('product_min_qty') old('product_min_qty') @else {{ $product_min_qty }} @endif">
                             <div id="product_min_qty_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -180,7 +180,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="card mb-4 shadow @error('product_out_of_stock_status') shadow-danger @enderror">
                         <div class="card-body">
                             <label for="product_out_of_stock_status" class="form-label">Product Out Of Stock Status</label>
-                            <input type="text" class="form-control @error('product_out_of_stock_status') is-invalid @enderror" id="product_out_of_stock_status" name="product_out_of_stock_status" value="{{ old('product_out_of_stock_status') }}{{ $product_out_of_stock_status }}">
+                            <input type="text" class="form-control @error('product_out_of_stock_status') is-invalid @enderror" id="product_out_of_stock_status" name="product_out_of_stock_status" value="@error('product_out_of_stock_status') old('product_out_of_stock_status') @else {{ $product_out_of_stock_status }} @endif">
                             <div id="product_out_of_stock_status_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -214,7 +214,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="card mb-4 shadow @error('product_date') shadow-danger @enderror">
                         <div class="card-body">
                             <label for="product_date" class="form-label">Product Date Availabel</label>
-                            <input type="date" class="form-control @error('product_date') is-invalid @enderror" id="product_date" name="product_date" value="{{ old('product_date') }}{{ $product_date }}">
+                            <input type="date" class="form-control @error('product_date') is-invalid @enderror" id="product_date" name="product_date" value=@error('product_date') old('product_date') @else {{ $product_date }} @endif>
                             <div id="product_date_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -232,7 +232,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="card mb-4 shadow @error('product_menuf') shadow-danger @enderror">
                         <div class="card-body">
                             <label for="product_menuf" class="form-label">Product Menufacturer</label>
-                            <input type="text" class="form-control @error('product_menuf') is-invalid @enderror" id="product_menuf" name="product_menuf" value="{{ old('product_menuf') }}{{ $product_menuf }}">
+                            <input type="text" class="form-control @error('product_menuf') is-invalid @enderror" id="product_menuf" name="product_menuf" value="@error('product_menuf') old('product_menuf') @else {{ $product_menuf }} @endif">
                             <div id="product_menuf_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -246,9 +246,11 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                         <div class="card-body">
                             <label for="product_cat" class="form-label">Product Categories</label>
                             <select multiple="" class="form-control @error('product_cat') is-invalid @enderror " id="product_cat" name="product_cat[]" aria-label="Multiple select example">
-                                <option value="1" @if (old("product_cat" )) @if( in_array('1', old("product_cat" )) ) selected @endif @elseif ($product_cat != '') @if (in_array('1' , json_decode($product_cat))) selected @endif @endif>One</option>
-                                <option value="2" @if (old("product_cat" )) @if( in_array('2', old("product_cat" )) ) selected @endif @elseif ($product_cat != '') @if (in_array('2' , json_decode($product_cat))) selected @endif @endif>Two</option>
-                                <option value="3" @if (old("product_cat" )) @if( in_array('3', old("product_cat" )) ) selected @endif @elseif ($product_cat != '') @if (in_array('3' , json_decode($product_cat))) selected @endif @endif>Three</option>
+                                @if(isset($category))
+                                    @foreach ($category as $key=>$categories)
+                                    <option value="{{ $categories["id"] }}" @if (old("product_cat" )) @if( in_array('{{ $categories["id"] }}', old("product_cat" )) ) selected @endif @elseif ($product_cat != '' ) @if (in_array('{{ $categories["id"] }}' , json_decode($product_cat))) selected @endif @endif>{{ $categories['Name'] }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                             <div id="product_cat_help" class="form-text">
                                 We'll never share your details with anyone else.
@@ -267,7 +269,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="card mb-4 shadow @error('product_discount') shadow-danger @enderror">
                         <div class="card-body">
                             <label for="product_discount" class="form-label">Product Discount</label>
-                            <input type="number" class="form-control @error('product_discount') is-invalid @enderror" id="product_discount" name="product_discount" value="{{ old('product_discount') }}{{ $product_discount }}">
+                            <input type="text" class="form-control @error('product_discount') is-invalid @enderror" id="product_discount" name="product_discount" value="@error('product_discount') old('product_discount') @else {{ $product_discount }} @endif">
                             <div id="product_discount_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -280,7 +282,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="card mb-4 shadow @error('product_special') shadow-danger @enderror">
                         <div class="card-body">
                             <label for="product_special" class="form-label">Product Special Price</label>
-                            <input type="number" class="form-control @error('product_special') is-invalid @enderror" id="product_special" name="product_special" value="{{ old('product_special') }}{{ $product_special }}">
+                            <input type="text" class="form-control @error('product_special') is-invalid @enderror" id="product_special" name="product_special" value="@error('product_special') old('product_special') @else {{ $product_special }} @endif">
                             <div id="product_special_help" class="form-text">
                                 We'll never share your details with anyone else.
                             </div>
@@ -313,7 +315,7 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                 <input type="hidden" name="product_main_img_p" value="{{ $product_main_img }}">
                 @endif
                 <div class="col-12 col-md-2 px-1 shadow">
-                    <img src="@if($product_main_img != '') {{ asset('assets/img/product') }}/{{ $product_main_img }} @else  http://localhost/one/public/assets/img/product/cosw2.jpg @endif" id="main_img_pre" width="100% " height="150px" class="rounded p-1 bg-light main_img_pre">
+                    <img src="@if($product_main_img != '') {{ asset('assets/img/product') }}/{{ $product_main_img }} @else  http://localhost/one/public/assets/img/product/cosw2.jpg @endif" style="object-fit: contain;" id="main_img_pre" width="100% " height="150px" class="rounded p-1 bg-light main_img_pre">
                 </div>
                 <div class="col-md-3">
                     <div class="h-100 card mb-4 shadow ">
@@ -380,12 +382,12 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                         </div>
                     </div>
                     <div class="col-12 col-md-2 px-1">
-                        <img src="{{ asset('assets/img/product') }}/{{ $sub_img['link'] }}" width="100%" height="150px" class="rounded shadow-sm p-1 bg-light img_pre_{{ $sub_counter }}_p">
+                        <img src="{{ asset('assets/img/product') }}/{{ $sub_img['link'] }}" style="object-fit: contain;" width="100%" height="150px" class="rounded shadow-sm p-1 bg-light img_pre_{{ $sub_counter }}_p">
                     </div>
                     <div class="col-md-2">
                         <div class="h-100 card mb-4 shadow ">
                             <div class="card-body">
-                                <input type="number" class="form-control  custom-middel" id="product_img_sort{{ $sub_counter }}_p" value="{{ $sub_img['sort_order'] }}" name="product_img_sort{{ $sub_counter }}_p">
+                                <input type="text" class="form-control  custom-middel" id="product_img_sort{{ $sub_counter }}_p" value="{{ $sub_img['sort_order'] }}" name="product_img_sort{{ $sub_counter }}_p">
                             </div>
                         </div>
                     </div>

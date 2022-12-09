@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Category;
 use App\Rules\Discount;
 use Illuminate\Http\Request;
+use App\Models\Setting;
 use DB;
 
 class ProductController extends Controller
@@ -41,12 +43,11 @@ class ProductController extends Controller
 
     public function load_form($id = '')
     {
+        $data['category'] = Category::where('status','1')->get(['id','Name'])->toArray();
         if($id != ''){
             $data['product'] = Product::where('id',$id)->get()->toArray();
-            return view('admin.form.product')->with($data);
-        }else{
-            return view('admin.form.product');
         }
+        return view('admin.form.product')->with($data);
     }
 
     public function delete_product($id = '')
@@ -140,14 +141,14 @@ class ProductController extends Controller
             $img_c = 0;
             $sub_img = [];
 
-            foreach ($request->all() as $key => $value) {
-                if($key != 'product_name' && $key != 'product_desc' && $key != 'product_tag' && $key != 'product_model' && $key != 'product_sku' && $key != 'product_price' && $key != 'product_tax_category' && $key != 'product_quantity' && $key != 'product_min_qty' && $key != 'product_out_of_stock_status' && $key != 'product_shipping_req' && $key != 'product_date' && $key != 'product_menuf' && $key != 'product_cat' && $key != 'product_discount' && $key != 'product_special' && $key != '_token' && $key != 'product_main_img_p'){
+            foreach ($request->file() as $key => $value) {
+                if($key != 'product_name' && $key != 'product_desc' && $key != 'product_tag' && $key != 'product_model' && $key != 'product_sku' && $key != 'product_price' && $key != 'product_tax_category' && $key != 'product_quantity' && $key != 'product_min_qty' && $key != 'product_out_of_stock_status' && $key != 'product_shipping_req' && $key != 'product_date' && $key != 'product_menuf' && $key != 'product_cat' && $key != 'product_discount' && $key != 'product_special' && $key != '_token' && $key != 'product_main_img_p' && $key != 'product_main_img'){
                     $this_id = str_replace('product_main_img','',$key);
                     $sort_order = 'product_img_sort' .$this_id;
                     if($request->file($key)){
                         $img_c++;
                         $ext = $request->file($key)->getClientOriginalExtension();
-                        // move_uploaded_file($request->file($key), public_path('assets\img\product\\') . 's-img-' . $request->product_sku . '-' . $img_c .'.' . $ext);
+                        move_uploaded_file($request->file($key), public_path('assets\img\product\\') . 's-img-' . $request->product_sku . '-' . $img_c .'.' . $ext);
                         $sub_img[$img_c] = [];
                         $sub_img[$img_c]['link'] = 's-img-' . $request->product_sku . '-' . $img_c .'.' . $ext;
                         $sub_img[$img_c]['sort_order'] = $request->$sort_order;
@@ -181,7 +182,7 @@ class ProductController extends Controller
         $product->cat           =  json_encode($request->product_cat);
         $product->disc          =  $request->product_discount;
         $product->spc           =  $request->product_special;
-        $product->mimg          =  'product_img';
+        $product->mimg          =  $product_img;
         $product->simg          =  json_encode($sub_img);
         if($product->save()){
             $data = [
