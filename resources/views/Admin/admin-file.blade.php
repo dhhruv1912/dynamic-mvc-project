@@ -70,6 +70,32 @@
             width: 85% !important;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!Notification) {
+                alert('Desktop notifications not available in your browser. Try Chromium.');
+                return;
+            }
+
+            if (Notification.permission !== 'granted')
+                Notification.requestPermission();
+        });
+
+
+        function notifyMe(title,msg,link,img) {
+            if (Notification.permission !== 'granted')
+                Notification.requestPermission();
+            else {
+                var notification = new Notification(title, {
+                    icon: img,
+                    body: msg,
+                });
+                notification.onclick = function() {
+                    window.open(link);
+                };
+            }
+        }
+    </script>
 </head>
 
 <body>

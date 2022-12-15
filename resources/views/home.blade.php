@@ -16,17 +16,17 @@
                             <p>{{ $settings['hero_desc'] }}</p>
                             <a href="{{ $settings['hero_link'] }}" class="primary-btn">{{ $settings['hero_button_text'] }}<span class="arrow_right"></span></a>
                             <div class="hero__social">
-                                @if(isset($settings['hero_fb_link']) && $settings['hero_fb_link'] != '#' && $settings['hero_fb_link'] != '') 
-                                    <a href="{{ $settings['hero_fb_link'] }}"><i class="fa fa-facebook"></i></a>
+                                @if(isset($settings['hero_fb_link']) && $settings['hero_fb_link'] != '#' && $settings['hero_fb_link'] != '')
+                                <a href="{{ $settings['hero_fb_link'] }}"><i class="fa fa-facebook"></i></a>
                                 @endif
-                                @if(isset($settings['hero_tw_link']) && $settings['hero_tw_link'] != '#' && $settings['hero_tw_link'] != '') 
-                                    <a href="{{ $settings['hero_tw_link'] }}"><i class="fa fa-twitter"></i></a>
+                                @if(isset($settings['hero_tw_link']) && $settings['hero_tw_link'] != '#' && $settings['hero_tw_link'] != '')
+                                <a href="{{ $settings['hero_tw_link'] }}"><i class="fa fa-twitter"></i></a>
                                 @endif
-                                @if(isset($settings['hero_pn_link']) && $settings['hero_pn_link'] != '#' && $settings['hero_pn_link'] != '') 
-                                    <a href="{{ $settings['hero_pn_link'] }}"><i class="fa fa-pinterest"></i></a>
+                                @if(isset($settings['hero_pn_link']) && $settings['hero_pn_link'] != '#' && $settings['hero_pn_link'] != '')
+                                <a href="{{ $settings['hero_pn_link'] }}"><i class="fa fa-pinterest"></i></a>
                                 @endif
-                                @if(isset($settings['hero_in_link']) && $settings['hero_in_link'] != '#' && $settings['hero_in_link'] != '') 
-                                    <a href="{{ $settings['hero_in_link'] }}"><i class="fa fa-instagram"></i></a>
+                                @if(isset($settings['hero_in_link']) && $settings['hero_in_link'] != '#' && $settings['hero_in_link'] != '')
+                                <a href="{{ $settings['hero_in_link'] }}"><i class="fa fa-instagram"></i></a>
                                 @endif
                             </div>
                         </div>
@@ -41,23 +41,23 @@
 <!-- Hero Section End -->
 
 <!-- Banner Section Begin -->
-@if (isset($settings['banner_category']) && count(json_decode($settings['banner_category'])) > 0  )
+@if (isset($settings['banner_category']) && count(json_decode($settings['banner_category'])) > 0 )
 <section class="banner spad">
     <div class="container">
         <div class="row">
             @php $banner_category = json_decode($settings['banner_category']); $display_cat = []; @endphp
             @if(isset($banner_category))
-                @foreach($category as $key=>$cat)
-                    @if($cat['id'] == $banner_category[0])
-                        @php $display_cat[] = $cat; @endphp
-                    @endif
-                    @if($cat['id'] == $banner_category[1])
-                        @php $display_cat[] = $cat; @endphp
-                    @endif
-                    @if($cat['id'] == $banner_category[2])
-                        @php $display_cat[] = $cat; @endphp
-                    @endif
-                @endforeach
+            @foreach($category as $key=>$cat)
+            @if($cat['id'] == $banner_category[0])
+            @php $display_cat[] = $cat; @endphp
+            @endif
+            @if($cat['id'] == $banner_category[1])
+            @php $display_cat[] = $cat; @endphp
+            @endif
+            @if($cat['id'] == $banner_category[2])
+            @php $display_cat[] = $cat; @endphp
+            @endif
+            @endforeach
             @endif
             @if(isset($display_cat[0]))
             <div class="col-lg-7 offset-lg-4">
@@ -118,91 +118,86 @@
         </div>
         <div class="row product__filter">
             @foreach($product['sale'] as $key=>$sale_product)
-                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
-                    <div class="product__item sale">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
+                <div class="product__item sale">
+                    <a href="{{ route('front.product',$sale_product['sku'] ) }}">
                         <div class="product__item__pic set-bg" data-setbg="{{ asset('/assets/img/product//' . $sale_product['mimg']) }}">
                             <span class="label">Sale</span>
                             <ul class="product__hover">
-                                <li><a href="#"><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></a></li>
-                                <li><a href="#"><img src="{{ asset('/front/img/icon/search.png') }}" alt=""></a></li>
+                                <li><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></li>
+                                <li><img src="{{ asset('/front/img/icon/search.png') }}" alt=""></li>
                             </ul>
                         </div>
-                        <div class="product__item__text">
-                            <h6>{{ $sale_product['name'] }}</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5><del>${{ $sale_product['price'] }}</del> ${{ $sale_product['spc'] }}</h5>
-                            <!-- <div class="product__color__select">
-                                <label for="pc-1">
-                                    <input type="radio" id="pc-1">
-                                </label>
-                                <label class="active black" for="pc-2">
-                                    <input type="radio" id="pc-2">
-                                </label>
-                                <label class="grey" for="pc-3">
-                                    <input type="radio" id="pc-3">
-                                </label>
-                            </div> -->
+                    </a>
+                    <div class="product__item__text">
+                        <h6>{{ $sale_product['name'] }}</h6>
+                        <a href="#" class="add-cart">+ Add To Cart</a>
+                        <div class="rating">
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
                         </div>
+                        <h5><del>${{ $sale_product['price'] }}</del> ${{ $sale_product['spc'] }}</h5>
                     </div>
                 </div>
+            </div>
 
             @endforeach
             @foreach($product['new'] as $key=>$new_product)
-                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                    <div class="product__item">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                <div class="product__item">
+                    <a href="{{ route('front.product',$new_product['sku'] ) }}">
                         <div class="product__item__pic set-bg" data-setbg="{{ asset('/assets/img/product//' . $new_product['mimg']) }}">
                             <span class="label">New</span>
                             <ul class="product__hover">
-                                <li><a href="#"><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></a></li>
-                                <li><a href="#"><img src="{{ asset('/front/img/icon/search.png') }}" alt=""></a></li>
+                                <li><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></li>
+                                <li><img src="{{ asset('/front/img/icon/search.png') }}" alt=""></li>
                             </ul>
                         </div>
-                        <div class="product__item__text">
-                            <h6>{{ $new_product['name'] }}</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>${{ $new_product['price'] }}</h5>
+                    </a>
+                    <div class="product__item__text">
+                        <h6>{{ $new_product['name'] }}</h6>
+                        <a href="#" class="add-cart">+ Add To Cart</a>
+                        <div class="rating">
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
                         </div>
+                        <h5>${{ $new_product['price'] }}</h5>
                     </div>
                 </div>
+            </div>
 
             @endforeach
             @foreach($product['rend'] as $key=>$rend_product)
-                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix">
-                    <div class="product__item">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix">
+                <div class="product__item">
+                    <a href="{{ route('front.product',$rend_product['sku'] ) }}">
                         <div class="product__item__pic set-bg" data-setbg="{{ asset('/assets/img/product//' . $rend_product['mimg']) }}">
                             <ul class="product__hover">
-                                <li><a href="#"><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></a></li>
-                                <li><a href="#"><img src="{{ asset('/front/img/icon/search.png') }}" alt=""></a></li>
+                                <li><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></li>
+                                <li><img src="{{ asset('/front/img/icon/search.png') }}" alt=""></li>
                             </ul>
                         </div>
-                        <div class="product__item__text">
-                            <h6>{{ $rend_product['name'] }}</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>${{ $rend_product['price'] }}</h5>
+                    </a>
+                    <div class="product__item__text">
+                        <h6>{{ $rend_product['name'] }}</h6>
+                        <a href="#" class="add-cart">+ Add To Cart</a>
+                        <div class="rating">
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
                         </div>
+                        <h5>${{ $rend_product['price'] }}</h5>
                     </div>
                 </div>
+            </div>
 
             @endforeach
         </div>

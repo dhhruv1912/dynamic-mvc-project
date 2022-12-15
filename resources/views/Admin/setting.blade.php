@@ -2,10 +2,6 @@
 
     @section('admin-section')
     <style>
-        /* .select2-selection__rendered{
-            color: #696cff;
-            background-color: #696cff29 !important;
-        } */
         .select2-selection__choice{
             background-color: #696cff !important;
             color: white;
@@ -16,6 +12,7 @@
         }
     </style>
     <div class="container-xxl flex-grow-1 container-p-y">
+        <button class="btn btn-primary" onclick="notifyMe()">Notify me!</button>
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Basic Inputs</h4>
 
         <div id="alert_tag"></div>
@@ -28,14 +25,38 @@
         @endforeach
         @endif
         <div class="mb-5 pb-5">
-            <!-- <button class="btn btn-primary" onclick="notifyMe()">Notify me!</button> -->
             @foreach ($settings as $key => $setting)
+            @if( $setting['name'] == 'product_tags' )
+                @php 
+                $tags = json_decode($setting['value']);
+                @endphp
+                <div class="card mb-4 shadow @error('product_name') shadow-danger @enderror">
+                    <div class="card-body">
+                        <div class="row">
+                            <label for="{{ $setting['name'] }}" class="col-form-label col-md-3"> {{ $setting['name'] }}</label>
+                            <div class="col-md-6">
+                                <select multiple name="{{ $setting['name'] }}[]" id="{{ $setting['name'] }}" class="form-control form-control-lg"  value="{{ $setting['value'] }}">
+                                    <option value="">Please Select</option>
+                                    @foreach($tags as $key=>$tag)
+                                        <option value="{{ $key }}" selected >{{ $tag }}</option>
+                                    @endforeach
+                                </select>
+                                <script>
+                                    $("#{{ $setting['name'] }}").select2({
+                                        placeholder: 'Select an option',
+                                    })
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @else
             <form action="{{ route('admin.setting.save',$setting['id']) }}" method="post" enctype= multipart/form-data>
                 @csrf
                 <div class="card mb-4 shadow @error('product_name') shadow-danger @enderror">
                     <div class="card-body">
                         <div class="row">
-                            <label for="{{ $setting['name'] }}" class="col-form-label col-md-3">{{ $setting['id'] }} . {{ $setting['name'] }}</label>
+                            <label for="{{ $setting['name'] }}" class="col-form-label col-md-3"> {{ $setting['name'] }}</label>
                             <div class="col-md-6">
                                 @if(preg_match('/(?<=::)[^{]+/',$setting['option']))
                                     @php 
@@ -142,6 +163,7 @@
                     </div>
                 </div>
             </form>
+            @endif
             @endforeach
             {{ $settings->links('pagination.setting') }}
         </div>
@@ -183,18 +205,6 @@
                 </div>
             </form>
         </div>
-        @if (session()->exists('add_res'))
-        @php $sus_data = session()->get('add_res'); @endphp
-        <div class="bg-{{ $sus_data['show_popup'] }} bottom-0 bs-toast end-0 fade m-4 show toast toast-placement-ex" id="page-responce" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
-            <div class="toast-header">
-                <i class="bx bx-bell me-2"></i>
-                <div class="me-auto fw-semibold">{{ $sus_data['title'] }}</div>
-                <!-- <small>11 mins ago</small> -->
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">{{ $sus_data['message'] }}</div>
-        </div>
-        @endif
     </div>
     <script>
         $(function () {
@@ -210,33 +220,19 @@
                 $('#'+preview_class).html(html);
             })
         });
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!Notification) {
-                alert('Desktop notifications not available in your browser. Try Chromium.');
-                return;
-            }
-
-            if (Notification.permission !== 'granted')
-                Notification.requestPermission();
-        });
-
-
-        function notifyMe() {
-            if (Notification.permission !== 'granted')
-                Notification.requestPermission();
-            else {
-                var notification = new Notification('Sahwa Production', {
-                    icon: 'http://localhost/one/public/assets/img/svg/logo.svg',
-                    body: 'Hey there! You\'ve been notified!',
-                });
-                notification.onclick = function() {
-                    window.open('http://localhost/one/public/Admin/dashboard');
-                };
-            }
-        }
+        
     </script>
+    
+    
     @endsection
     @section('sub-script')
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        @if (session()->exists('add_res'))
+        @php $sus_data = session()->get('add_res'); @endphp
+            <script>
+                
+                notifyMe("{{ $sus_data['title'] }}","{{ $sus_data['message'] }}",'http://localhost/one/public/Admin/dashboard','http://localhost/one/public/assets/img/svg/logo.svg');
+            </script>
+            @endif
     @endsection

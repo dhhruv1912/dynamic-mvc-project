@@ -24,9 +24,23 @@
     <link rel="stylesheet" href="{{ asset('/front/css/owl.carousel.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('/front/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('/front/css/style.css') }}" type="text/css">
+    @yield('style')
     <style>
         .filter_check:checked{
             color:black;
+        }
+
+        .header__top__links span{
+            color: #fff;
+            font-size: 13px;
+            /* text-transform: uppercase; */
+            letter-spacing: 2px;
+            margin-right: 28px;
+            display: inline-block;
+        }
+
+        .bg-tranapsrent{
+            background-color: transparent !important;
         }
     </style>
 </head>
@@ -42,16 +56,7 @@
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__option">
             <div class="offcanvas__links">
-                <a href="#">Sign in</a>
-                <a href="#">FAQs</a>
-            </div>
-            <div class="offcanvas__top__hover">
-                <span>Usd <i class="arrow_carrot-down"></i></span>
-                <ul>
-                    <li>USD</li>
-                    <li>EUR</li>
-                    <li>USD</li>
-                </ul>
+                <a href="{{ route('login_form') }}">Sign in</a>
             </div>
         </div>
         <div class="offcanvas__nav__option">
@@ -80,16 +85,12 @@
                     <div class="col-lg-6 col-md-5">
                         <div class="header__top__right">
                             <div class="header__top__links">
-                                <a href="#">Sign in</a>
-                                <a href="#">FAQs</a>
-                            </div>
-                            <div class="header__top__hover">
-                                <span>Usd <i class="arrow_carrot-down"></i></span>
-                                <ul>
-                                    <li>USD</li>
-                                    <li>EUR</li>
-                                    <li>USD</li>
-                                </ul>
+                                @if(Auth::check())
+                                    <span> 👋 Hello, {{ Auth::user()->fname }} {{ Auth::user()->lname }}</span>
+                                    <a href="{{ route('logout') }}">Sign out</a>
+                                @else
+                                    <a href="{{ route('login_form') }}">Sign in</a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -106,11 +107,11 @@
                 <div class="col-lg-6 col-md-6">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li class="active"><a href="index.html">Home</a></li>
+                            <li class="active"><a href="{{ route('home') }}">Home</a></li>
                             <li><a href="{{ route('front.shop') }}">Shop</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
-                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="{{ route('front.about') }}">About Us</a></li>
                                     <li><a href="shop-details.html">Shop Details</a></li>
                                     <li><a href="shopping-cart.html">Shopping Cart</a></li>
                                     <li><a href="checkout.html">Check Out</a></li>
@@ -125,9 +126,14 @@
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="{{ asset('/front/img/icon/search.png') }}" alt=""></a>
-                        <a href="#"><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></a>
-                        <a href="#"><img src="{{ asset('/front/img/icon/cart.png') }}" alt=""> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        @if(Auth::check())
+                            <a href="#"><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></a>
+                            <a href="{{ route('front.cart') }}"><img src="{{ asset('/front/img/icon/cart.png') }}" alt=""> <span>0</span></a>
+                            <div class="price">$0.00</div>
+                        @else
+                            <a href="{{ route('login_form') }}"><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></a>
+                            <a href="{{ route('login_form') }}"><img src="{{ asset('/front/img/icon/cart.png') }}" alt=""> <span>0</span></a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -226,6 +232,7 @@
     <script src="{{ asset('/front/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('/front/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('/front/js/main.js') }}"></script>
+    
     @yield('home-script')   
 </body>
 

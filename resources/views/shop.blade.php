@@ -1,5 +1,10 @@
 @extends('front-file')
 @section('front')
+<pre>
+    @if(isset($filter))
+    @php print_r($filter) @endphp
+    @endif
+</pre>
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
     <div class="container">
@@ -41,7 +46,7 @@
                                                 <ul class="nice-scroll">
                                                     @foreach($category as $key=>$cat)
                                                     <li class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="cat[]" id="cat-{{ $key }}" value="{{ $key }}">
+                                                        <input class="form-check-input" type="radio" name="cat" id="cat-{{ $key }}" @if(isset($filter['cat'])) @if($filter['cat'] == $key) checked @endif @endif value="{{ $key }}">
                                                         <label for="cat-{{ $key }}">{{ $cat }}</label>
                                                     </li>
                                                     @endforeach
@@ -59,8 +64,16 @@
                                             <div class="shop__sidebar__price">
                                                 <ul>
                                                     <li class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="price[]" id="price-0-50" value="0-50">
-                                                        <label for="price-0-50">$0.00 - $50.00</label>
+                                                        <input class="form-check-input" type="radio" name="price" id="price-0-100" @if(isset($filter['price'])) @if($filter['price'] == '0-100') checked @endif @endif  value="0-100">
+                                                        <label for="price-0-100">$0.00 - $100.00</label>
+                                                    </li>
+                                                    <li class="form-check">
+                                                        <input class="form-check-input" type="radio" name="price" id="price-100-500" @if(isset($filter['price'])) @if($filter['price'] == '100-500') checked @endif @endif  value="100-500">
+                                                        <label for="price-100-500">$100.00 - $500.00</label>
+                                                    </li>
+                                                    <li class="form-check">
+                                                        <input class="form-check-input" type="radio" name="price" id="price-500-" @if(isset($filter['price'])) @if($filter['price'] == '500-') checked @endif @endif  value="500-">
+                                                        <label for="price-500-">$500.00 +</label>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -75,10 +88,13 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__tags">
                                                 <ul>
+                                                    @php $tgs = json_decode($tags[0]['value']) @endphp
+                                                    @foreach($tgs as $t=>$tg)
                                                     <li class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="tag[]" id="tag-product" value="product">
-                                                        <label for="tag-product">Product</label>
+                                                        <input class="form-check-input" type="radio" name="tag" id="tag-{{ $tg }}"  @if(isset($filter['tag'])) @if($filter['tag'] == $tg) checked @endif @endif value="{{ $tg }}">
+                                                        <label for="tag-{{ $tg }}">{{ $tg }}</label>
                                                     </li>
+                                                    @endforeach
                                                 </ul>
                                             </div>
                                         </div>
@@ -113,38 +129,28 @@
                     @foreach($product as $key=>$prdt)
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="{{ asset('/front/img/product/product-'. $key .'.jpg') }}">
-                                <ul class="product__hover">
-                                    <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                                    <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a>
-                                    </li>
-                                    <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6>Piqué Biker Jacket</h6>
-                                <a href="#" class="add-cart">+ Add To Cart</a>
-                                <div class="rating">
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
+                            
+                            <a href="{{ route('front.product',$prdt->sku ) }}">
+                                <div class="product__item__pic set-bg" data-setbg="{{ asset('/assets/img/product//'. $prdt->mimg ) }}">
+                                    <ul class="product__hover">
+                                        <li><img src="{{ asset('/front/img/icon/heart.png' ) }}" alt=""></li>
+                                        <li><img src="{{ asset('/front/img/icon/search.png' ) }}" alt=""></li>
+                                    </ul>
                                 </div>
-                                <h5>$67.24</h5>
-                                <div class="product__color__select">
-                                    <label for="pc-4">
-                                        <input type="radio" id="pc-4">
-                                    </label>
-                                    <label class="active black" for="pc-5">
-                                        <input type="radio" id="pc-5">
-                                    </label>
-                                    <label class="grey" for="pc-6">
-                                        <input type="radio" id="pc-6">
-                                    </label>
+                            </a>
+                                <div class="product__item__text">
+                                    <h6>{{ $prdt->name  }}</h6>
+                                    <a href="#" class="add-cart">+ Add To Cart</a>
+                                    <div class="rating">
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                    <h5>${{$prdt->price }}</h5>
                                 </div>
                             </div>
-                        </div>
                     </div>
                     @endforeach
                 </div>

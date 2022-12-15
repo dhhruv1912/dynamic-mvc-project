@@ -94,6 +94,7 @@ class ProductController extends Controller
                 'product_discount' => 'lt:' . $request->product_price,
                 'product_special' => 'lt:' . $request->product_price,
                 'product_main_img' => 'required',
+                'about' => 'required',
             ]);
             $extm = $request->file('product_main_img')->getClientOriginalExtension();
             move_uploaded_file($request->file('product_main_img'), public_path('assets\img\product\\') . 'm-img-' . $request->product_sku . '.' . $extm);
@@ -130,6 +131,7 @@ class ProductController extends Controller
                 'product_cat' => 'required',
                 'product_discount' => 'integer|lt:' . (int)$request->product_price,
                 'product_special' => 'integer|lt:' . (int)$request->product_price,
+                'about' => 'required',
             ]);
             if($request->file('product_main_img') != ''){
                 $extm = $request->file('product_main_img')->getClientOriginalExtension();
@@ -141,7 +143,7 @@ class ProductController extends Controller
             $img_c = 0;
             $sub_img = [];
 
-            foreach ($request->file() as $key => $value) {
+            foreach ($request->all() as $key => $value) {
                 if($key != 'product_name' && $key != 'product_desc' && $key != 'product_tag' && $key != 'product_model' && $key != 'product_sku' && $key != 'product_price' && $key != 'product_tax_category' && $key != 'product_quantity' && $key != 'product_min_qty' && $key != 'product_out_of_stock_status' && $key != 'product_shipping_req' && $key != 'product_date' && $key != 'product_menuf' && $key != 'product_cat' && $key != 'product_discount' && $key != 'product_special' && $key != '_token' && $key != 'product_main_img_p' && $key != 'product_main_img'){
                     $this_id = str_replace('product_main_img','',$key);
                     $sort_order = 'product_img_sort' .$this_id;
@@ -168,9 +170,11 @@ class ProductController extends Controller
         $product = Product::findOrNew($id);
         $product->name          =  $request->product_name;
         $product->desc          =  $request->product_desc;
-        $product->tag           =  $request->product_tag;
+        $product->tag           =  json_encode(explode(',',$request->product_tag));
         $product->model         =  $request->product_model;
         $product->sku           =  $request->product_sku;
+        $product->info          =  $request->info;
+        $product->about         =  $request->about;
         $product->price         =  $request->product_price;
         $product->tax           =  $request->product_tax_category;
         $product->qty           =  $request->product_quantity;
@@ -179,12 +183,20 @@ class ProductController extends Controller
         $product->shipping      =  $request->product_shipping_req;
         $product->avl_date      =  $request->product_date;
         $product->mfc           =  $request->product_menuf;
-        $product->cat           =  json_encode($request->product_cat);
+        $product->cat           =  $request->product_cat;
         $product->disc          =  $request->product_discount;
         $product->spc           =  $request->product_special;
         $product->mimg          =  $product_img;
         $product->simg          =  json_encode($sub_img);
         if($product->save()){
+            $tags = json_decode(Setting::where('name','product_tags')->pluck('value')->toArray()[0]);
+            foreach (json_decode($product->tag) as  $value) {
+                array_push($tags,strtolower($value));
+            }
+            $tags = array_unique($tags);
+            $p_tag = Setting::findOrNew(36);
+            $p_tag->value = json_encode($tags);
+            $p_tag->save();
             $data = [
                 'show_popup' => 'primary',
                 'title'      => 'Success',

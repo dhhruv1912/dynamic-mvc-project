@@ -1,12 +1,11 @@
 @extends('Admin.admin-file')
 
 @section('admin-section')
-<pre>
     @php
 $product_id = (isset($product)) ? $product[0]['id'] : '';
 $product_name = (isset($product)) ? $product[0]['name'] : '';
 $product_desc = (isset($product)) ? $product[0]['desc'] : '';
-$product_tag = (isset($product)) ? $product[0]['tag'] : '';
+$product_tag = (isset($product)) ? implode(',',json_decode($product[0]['tag'])) : '';
 $product_model = (isset($product)) ? $product[0]['model'] : '';
 $product_sku = (isset($product)) ? $product[0]['sku'] : '';
 $product_price = (isset($product)) ? $product[0]['price'] : '';
@@ -22,8 +21,9 @@ $product_discount = (isset($product)) ? $product[0]['disc'] : 0;
 $product_special = (isset($product)) ? $product[0]['spc'] : 0;
 $product_main_img = (isset($product)) ? $product[0]['mimg'] : '';
 $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
+$product_info = (isset($product)) ? $product[0]['info'] : '';
+$product_about = (isset($product)) ? $product[0]['about'] : '';
 @endphp
-</pre>
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Basic Inputs</h4>
 
@@ -62,16 +62,6 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                             </div>
                             <div id="product_name_error" class="form-text text-danger">
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-4 shadow @error('product_desc') shadow-danger @enderror">
-                <div class="card-body">
-                    <div class="row">
-                        <label for="product_desc" class="col-form-label col-md-2">Product Description</label>
-                        <div class="col-md-10">
-                            <textarea type="text" class="form-control @error('product_desc') is-invalid @enderror prod_desc" id="product_desc" name="product_desc">{{ old('product_desc') }}{{ $product_desc }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -245,10 +235,11 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <div class="card mb-4 shadow @error('product_cat') shadow-danger @enderror">
                         <div class="card-body">
                             <label for="product_cat" class="form-label">Product Categories</label>
-                            <select multiple="" class="form-control @error('product_cat') is-invalid @enderror " id="product_cat" name="product_cat[]" aria-label="Multiple select example">
+                            <select class="form-control @error('product_cat') is-invalid @enderror " id="product_cat" name="product_cat" aria-label="Multiple select example">
+                                <option value=""  >Select Category</option>
                                 @if(isset($category))
                                     @foreach ($category as $key=>$categories)
-                                    <option value="{{ $categories["id"] }}" @if (old("product_cat" )) @if( in_array('{{ $categories["id"] }}', old("product_cat" )) ) selected @endif @elseif ($product_cat != '' ) @if (in_array('{{ $categories["id"] }}' , json_decode($product_cat))) selected @endif @endif>{{ $categories['Name'] }}</option>
+                                    <option value="{{ (int)$categories["id"] }}" @if (old("product_cat" )) @if( $categories["id"] == old("product_cat" ) ) selected @endif @else @if ( $categories["id"] == $product_cat) selected @endif @endif>{{ $categories['Name'] }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -407,6 +398,37 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
                     <span class="add_extra_image btn btn-primary float-end my-2 rounded-pill">Add Image</span>
                 </div>
             </div>
+            
+            <div class="card mb-4 shadow @error('product_desc') shadow-danger @enderror">
+                <div class="card-body">
+                    <div class="row">
+                        <label for="product_desc" class="col-form-label col-md-2">Product Description</label>
+                        <div class="col-md-10">
+                            <textarea type="text" class="form-control @error('product_desc') is-invalid @enderror prod_desc" id="product_desc" name="product_desc">@error('product_desc') old('product_desc') @else {!! $product_desc !!} @endif</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4 shadow @error('info') shadow-danger @enderror">
+                <div class="card-body">
+                    <div class="row">
+                        <label for="info" class="col-form-label col-md-2">Additional Information</label>
+                        <div class="col-md-10">
+                            <textarea type="text" class="form-control @error('info') is-invalid @enderror prod_desc" id="info" name="info">@error('product_info') old('product_info') @else {!! $product_info !!} @endif</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4 shadow @error('about') shadow-danger @enderror">
+                <div class="card-body">
+                    <div class="row">
+                        <label for="about" class="col-form-label col-md-2">About Product</label>
+                        <div class="col-md-10">
+                            <textarea type="text" class="form-control @error('about') is-invalid @enderror prod_desc" id="about" name="about">@error('product_about') old('product_about') @else {!! $product_about !!} @endif</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>  
         </div>
         <div>
             <div class="bottom-0 position-fixed row w-75">
@@ -425,6 +447,11 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
 </div>
 </form>
 
+<script>
+    $('.prod_desc').summernote();
+    $('.info').summernote();
+    $('.about').summernote();
+</script>
 @endsection
 
 @section('sub-script')
@@ -437,13 +464,4 @@ $product_sub_img = (isset($product)) ? $product[0]['simg'] : '';
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 <script src="{{ asset('assets/js/page/product_form.js') }}"></script>
-<script>
-    $('.prod_desc').summernote();
-    if ("{{ $product_desc }}" != "") {
-        markupStr = "{{ $product_desc }}";
-    } else {
-        markupStr = "{{ old('product_desc') }}";
-    }
-    $('.prod_desc').summernote('code', markupStr)
-</script>
 @endsection

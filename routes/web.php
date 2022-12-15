@@ -5,8 +5,27 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::any('/', 'HomeController@index')->name('home');
+
+Route::any('/login', 'LogController@login_form')->name('login_form');
+Route::any('/logout', 'LogController@logout')->name('logout');
+Route::any('/login-user', 'LogController@login')->name('login');
+Route::any('/rerister', 'LogController@reg_form')->name('reg_form');
+Route::any('/rerister-user', 'LogController@reg')->name('reg');
+
 Route::any('/shop', 'ShopController@index')->name('front.shop');
 Route::post('/shop/filter', 'ShopController@filter')->name('front.filter');
+Route::any('/category', 'ShopController@category_listing')->name('front.category_listing');
+Route::any('/category/{category}', 'ShopController@category')->name('front.category');
+Route::any('/tag/{tag}', 'ShopController@tag')->name('front.tag');
+Route::any('/product/{product}', 'ShopController@product')->name('front.product');
+
+Route::any('/about', 'HomeController@about_page')->name('front.about');
+
+Route::any('/cart', 'HomeController@cart_page')->name('front.cart');
+Route::any('/cart/add', 'UserController@add_to_cart')->name('front.cart.add');
+Route::any('/cart/remove/{product}', 'UserController@remove_from_cart')->name('front.cart.remove');
+Route::any('/cart/update', 'UserController@update_cart')->name('cart_update');
+
 //new route//
 
 // Login
