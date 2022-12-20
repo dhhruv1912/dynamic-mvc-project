@@ -297,7 +297,6 @@ $product_about = (isset($product)) ? $product[0]['about'] : '';
                 <div class="col-md-6">
                     <div class="h-100 card mb-4 shadow @error('product_main_img') shadow-danger @enderror">
                         <div class="card-body">
-                            <label for="product_main_img" class="form-label">Product Special Price</label>
                             <input type="file" data-target="main_img_pre" class="form-control @error('product_main_img') is-invalid @enderror" id="product_main_img" name="product_main_img">
                         </div>
                     </div>

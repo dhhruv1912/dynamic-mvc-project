@@ -246,7 +246,7 @@
                             <p>Seconds</p>
                         </div>
                     </div>
-                    <a href="#" class="primary-btn">Shop now</a>
+                    <a href="{{ route('front.product',$hero[0]['sku'] ) }}" class="primary-btn">Shop now</a>
                 </div>
             </div>
         </div>

@@ -3,7 +3,9 @@
 
 
 <!-- Mirrored from technext.github.io/malefashion/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 06 Dec 2022 13:16:09 GMT -->
-<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Male_Fashion Template">
@@ -12,9 +14,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Male-Fashion | Template</title>
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap"
-    rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
     <!-- Css Styles -->
     <link rel="stylesheet" href="{{ asset('/front/css/bootstrap.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('/front/css/font-awesome.min.css') }}" type="text/css">
@@ -24,13 +25,14 @@
     <link rel="stylesheet" href="{{ asset('/front/css/owl.carousel.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('/front/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('/front/css/style.css') }}" type="text/css">
+    <script src="{{ asset('/front/js/jquery-3.3.1.min.js') }}"></script>
     @yield('style')
     <style>
-        .filter_check:checked{
-            color:black;
+        .filter_check:checked {
+            color: black;
         }
 
-        .header__top__links span{
+        .header__top__links span {
             color: #fff;
             font-size: 13px;
             /* text-transform: uppercase; */
@@ -39,9 +41,15 @@
             display: inline-block;
         }
 
-        .bg-tranapsrent{
+        .bg-tranapsrent {
             background-color: transparent !important;
         }
+
+        .is-invalid {
+            border-color: #f00 !important;
+            margin-bottom: 0px !important;
+        }
+
     </style>
 </head>
 
@@ -56,13 +64,18 @@
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__option">
             <div class="offcanvas__links">
-                <a href="{{ route('login_form') }}">Sign in</a>
+                @if(Auth::check())
+                    <span> 👋 Hello, {{ Auth::user()->fname }}</span>
+                    <a href="{{ route('logout') }}">Sign out</a>
+                @else
+                    <a href="{{ route('login_form') }}">Sign in</a>
+                @endif
             </div>
         </div>
         <div class="offcanvas__nav__option">
             <a href="#" class="search-switch"><img src="{{ asset('/front/img/icon/search.png') }}" alt=""></a>
-            <a href="#"><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></a>
-            <a href="#"><img src="{{ asset('/front/img/icon/cart.png') }}" alt=""> <span>0</span></a>
+            <a href="{{ route('front.wishlist') }}"><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></a>
+            <a href="{{ route('front.cart') }}"><img src="{{ asset('/front/img/icon/cart.png') }}" alt=""> <span>0</span></a>
             <div class="price">$0.00</div>
         </div>
         <div id="mobile-menu-wrap"></div>
@@ -86,10 +99,10 @@
                         <div class="header__top__right">
                             <div class="header__top__links">
                                 @if(Auth::check())
-                                    <span> 👋 Hello, {{ Auth::user()->fname }} {{ Auth::user()->lname }}</span>
-                                    <a href="{{ route('logout') }}">Sign out</a>
+                                <span> 👋 Hello, {{ Auth::user()->fname }} {{ Auth::user()->lname }}</span>
+                                <a href="{{ route('logout') }}">Sign out</a>
                                 @else
-                                    <a href="{{ route('login_form') }}">Sign in</a>
+                                <a href="{{ route('login_form') }}">Sign in</a>
                                 @endif
                             </div>
                         </div>
@@ -101,25 +114,17 @@
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <div class="header__logo">
-                        <a href="index.html"><img src="{{ asset('/front/img/logo.png') }}" alt=""></a>
+                        <a href="{{ route('home') }}"><img src="{{ asset('/front/img/logo.png') }}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li class="active"><a href="{{ route('home') }}">Home</a></li>
-                            <li><a href="{{ route('front.shop') }}">Shop</a></li>
-                            <li><a href="#">Pages</a>
-                                <ul class="dropdown">
-                                    <li><a href="{{ route('front.about') }}">About Us</a></li>
-                                    <li><a href="shop-details.html">Shop Details</a></li>
-                                    <li><a href="shopping-cart.html">Shopping Cart</a></li>
-                                    <li><a href="checkout.html">Check Out</a></li>
-                                    <li><a href="blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="blog.html">Blog</a></li>
-                            <li><a href="contact.html">Contacts</a></li>
+                            <li class="@if(\Request::route()->getName() == 'home' ) active @endif"><a href="{{ route('home') }}">Home</a></li>
+                            <li class="@if(\Request::route()->getName() == 'front.shop' ) active @endif" ><a href="{{ route('front.shop') }}">Shop</a></li>
+                            <li class="@if(\Request::route()->getName() == 'front.about' ) active @endif" ><a href="{{ route('front.about') }}">About Us</a></li>
+                            <li class="@if(\Request::route()->getName() == 'front.blog' ) active @endif" ><a href="{{ route('front.blog') }}">Blog</a></li>
+                            <li class="@if(\Request::route()->getName() == 'front.contect' ) active @endif" ><a href="{{ route('front.contect') }}">Contacts</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -127,12 +132,12 @@
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="{{ asset('/front/img/icon/search.png') }}" alt=""></a>
                         @if(Auth::check())
-                            <a href="#"><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></a>
-                            <a href="{{ route('front.cart') }}"><img src="{{ asset('/front/img/icon/cart.png') }}" alt=""> <span>0</span></a>
-                            <div class="price">$0.00</div>
+                        <a href="{{ route('front.wishlist') }}"><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></a>
+                        <a href="{{ route('front.cart') }}"><img src="{{ asset('/front/img/icon/cart.png') }}" alt=""> <span>0</span></a>
+                        <div class="price">$0.00</div>
                         @else
-                            <a href="{{ route('login_form') }}"><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></a>
-                            <a href="{{ route('login_form') }}"><img src="{{ asset('/front/img/icon/cart.png') }}" alt=""> <span>0</span></a>
+                        <a href="{{ route('login_form') }}"><img src="{{ asset('/front/img/icon/heart.png') }}" alt=""></a>
+                        <a href="{{ route('login_form') }}"><img src="{{ asset('/front/img/icon/cart.png') }}" alt=""> <span>0</span></a>
                         @endif
                     </div>
                 </div>
@@ -200,8 +205,7 @@
                             <script>
                                 document.write(new Date().getFullYear());
                             </script>2020
-                            All rights reserved | This template is made with <i class="fa fa-heart-o"
-                            aria-hidden="true"></i> by <a href="https://colorlib.com/" target="_blank">Colorlib</a>
+                            All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com/" target="_blank">Colorlib</a>
                         </p>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </div>
@@ -222,7 +226,6 @@
     </div>
     <!-- Search End -->
     <!-- Js Plugins -->
-    <script src="{{ asset('/front/js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('/front/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('/front/js/jquery.nice-select.min.js') }}"></script>
     <script src="{{ asset('/front/js/jquery.nicescroll.min.js') }}"></script>
@@ -232,8 +235,8 @@
     <script src="{{ asset('/front/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('/front/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('/front/js/main.js') }}"></script>
-    
-    @yield('home-script')   
+
+    @yield('home-script')
 </body>
 
 

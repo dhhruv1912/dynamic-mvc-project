@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Setting;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\UserData;
 use DB;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ShopController extends Controller
 {
@@ -53,6 +55,9 @@ class ShopController extends Controller
         ->join('categories', 'product.cat', '=', 'categories.id')
         ->select('product.*','categories.Name as c_name', 'categories.Slug as c_slug')
         ->where('sku',$product)->get();
+        if(Auth::check()){
+            $data['wishlist'] = json_decode(UserData::where('user_id',Auth::user()->id)->get('save_data')->toArray()[0]['save_data'],true);
+        }
         return view('product')->with($data);
     }
 

@@ -4,11 +4,6 @@
 <link rel="stylesheet" href="{{ asset('plugin/slick/slick-theme.css') }}">
 @endsection
 @section('front')
-<pre>
-    @php
-         // print_r($product[0]);
-    @endphp
-</pre>
 <!-- Shop Details Section Begin -->
 <section class="shop-details">
     <div class="product__details__pic mx-md-5 mb-0" style="border-radius: 50px;">
@@ -57,27 +52,39 @@
                         <h3>${{ $product[0]->price }} </h3>
                         @endif
                         <p>{!! $product[0]->about !!}</p>
-                        <form action="{{ route('front.cart.add')}}" method="post">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product[0]->id }}">
-                            <div class="product__details__cart__option">
-                                <div class="quantity bg-white">
-                                    <div class="pro-qty">
-                                        <input type="text" name="qty" value="1">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <form action="{{ route('front.cart.add')}}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product[0]->id }}">
+                                    <div class="product__details__cart__option">
+                                        <div class="quantity bg-white">
+                                            <div class="pro-qty border-0">
+                                                <input type="text" name="qty" value="1">
+                                            </div>
+                                        </div>
+                                        <input class="btn btn-outline-success" type="submit" value="add to cart">
                                     </div>
-                                </div>
-                                <input class="primary-btn" type="submit" value="add to cart">
+                                </form>
                             </div>
-                        </form>
-                        <div class="product__details__btns__option">
-                            <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
+                            @if(auth()->check())
+                            <div class="col-md-3">
+                                @if(in_array($product[0]->id, $wishlist))
+                                <a href="{{ route('front.wishlist.remove', $product[0]->id) }}" class="btn btn-info"><i class='fa fa-heart'></i></a>
+                                @else
+                                <form action="{{ route('front.wishlist.add') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product[0]->id }}">
+                                    <button type="submit" class="btn btn-outline-info"><i class='fa fa-heart'></i></button>
+                                </form>
+                                @endif
+                            </div>
+                            @endif
                         </div>
                         <div class="product__details__last__option">
-                            <h5><span class="bg-transparent">Guaranteed Safe Checkout</span></h5>
-                            <img src="{{ asset('front/img/shop-details/details-payment.png') }}" alt="">
                             <ul>
                                 <li><span>SKU:</span> {{ $product[0]->sku }}</li>
-                                <li><span>Categories:</span> <a class="btn" href="{{ route('front.category', $product[0]->c_slug ) }}">{{ $product[0]->c_name }}</a></li>
+                                <li><span>Category:</span> <a class="btn" href="{{ route('front.category', $product[0]->c_slug ) }}">{{ $product[0]->c_name }}</a></li>
                                 <li><span>Tag:</span>
                                     @foreach(json_decode($product[0]->tag,true) as $aa=>$tag) <a href="{{ route('front.tag', $tag ) }}" class="btn"> {{ $tag }}</a> @endforeach
                                 </li>

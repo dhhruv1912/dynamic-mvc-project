@@ -144,7 +144,7 @@
 
                     <li class="menu-item" data-i18n="menu">
                         <a href="{{ route('admin.menu') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <i class="menu-icon tf-icons bx bx-food-menu"></i>
                             <div>Menu</div>
                         </a>
                     </li>

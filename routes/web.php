@@ -20,11 +20,26 @@ Route::any('/tag/{tag}', 'ShopController@tag')->name('front.tag');
 Route::any('/product/{product}', 'ShopController@product')->name('front.product');
 
 Route::any('/about', 'HomeController@about_page')->name('front.about');
+Route::any('/contect', 'HomeController@contect_page')->name('front.contect');
+Route::any('/contect/form', 'UserController@contect_form')->name('front.contect.form');
 
 Route::any('/cart', 'HomeController@cart_page')->name('front.cart');
 Route::any('/cart/add', 'UserController@add_to_cart')->name('front.cart.add');
 Route::any('/cart/remove/{product}', 'UserController@remove_from_cart')->name('front.cart.remove');
 Route::any('/cart/update', 'UserController@update_cart')->name('cart_update');
+
+Route::any('/wishlist', 'HomeController@wishlist_page')->name('front.wishlist');
+Route::any('/wishlist/add', 'UserController@add_to_wishlist')->name('front.wishlist.add');
+Route::any('/wishlist/remove/{product}', 'UserController@remove_from_wishlist')->name('front.wishlist.remove');
+
+Route::any('/blog', 'HomeController@blog_list')->name('front.blog');
+Route::any('/blog/{slug}', 'HomeController@blog_details')->name('front.blog.view');
+Route::any('/blog/tag/{tag}', 'HomeController@blog_tag')->name('front.blog.tag');
+Route::any('/blog/like/{blog_id}', 'UserController@blog_like')->name('front.blog.like');
+
+Route::post('/blog/comment/add', 'UserController@add_comment')->name('front.blog.comment');
+
+Route::any('/writer/{username}', 'HomeController@writer')->name('front.writer');
 
 //new route//
 
@@ -49,7 +64,7 @@ Route::group(['prefix' => 'Admin','middleware' => ['web','auth:admin']], functio
     Route::any('/product/form/{id?}', 'Admin\ProductController@load_form')->name('admin.product_add');
     Route::post('/product/save/{id?}', 'Admin\ProductController@save_form')->name('admin.product_save');
     Route::any('/product/delete/{id}', 'Admin\ProductController@delete_product')->name('admin.product_delete');
-
+    
     Route::any('/setting', 'Admin\SettingController@index')->name('admin.setting');
     Route::any('/setting/add', 'Admin\SettingController@add_setting')->name('admin.add_setting');
     Route::any('/setting/save/{id}', 'Admin\SettingController@save')->name('admin.setting.save');
@@ -58,7 +73,19 @@ Route::group(['prefix' => 'Admin','middleware' => ['web','auth:admin']], functio
     Route::any('/category/form/{id?}', 'Admin\CategoryController@load_form')->name('admin.category.form');
     Route::any('/category/save/{id?}', 'Admin\CategoryController@save_form')->name('admin.category.save');
     Route::any('/category/delete/{id}', 'Admin\CategoryController@delete')->name('admin.category.delete');
-//new Admin route//
+    
+    Route::any('/blog', 'Admin\BlogController@index')->name('admin.blog');
+    Route::any('/blog/form/{slug?}', 'Admin\BlogController@load_form')->name('admin.blog_form');
+    Route::post('/blog/save/{id?}', 'Admin\BlogController@save_form')->name('admin.blog_save');
+    Route::any('/blog/delete/{slug}', 'Admin\BlogController@delete_blog')->name('admin.blog_delete');
+
+    Route::any('/writer', 'Admin\WriterController@index')->name('admin.writer');
+    Route::any('/writer/form/{username?}', 'Admin\WriterController@load_form')->name('admin.writer.form');
+    Route::any('/writer/save/{id?}', 'Admin\WriterController@save_form')->name('admin.writter.save');
+    Route::any('/writer/delete/{username?}', 'Admin\WriterController@delete')->name('admin.writter.delete');
+    //new Admin route//
+
+
 
 
 });

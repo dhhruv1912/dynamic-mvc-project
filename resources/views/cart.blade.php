@@ -18,7 +18,7 @@
     </div>
 </section>
 <!-- Breadcrumb Section End -->
-
+@php $total = []; @endphp
 <!-- Shopping Cart Section Begin -->
 <section class="shopping-cart spad">
     <div class="container">
@@ -45,17 +45,17 @@
                                         </div>
                                         <div class="product__cart__item__text">
                                             <h6 style="width: 80%;text-align:left">{{ $product[$kkk]['name'] }}</h6>
-                                            <h5>${{ ($product[$kkk]['price'] - $product[$kkk]['spc']) }}</h5>
+                                            <h5 class="product_price">${{ ($product[$kkk]['price'] - $product[$kkk]['spc']) }}</h5>
                                         </div>
                                     </td>
                                     <td class="quantity__item">
                                         <div class="quantity">
                                             <div class="pro-qty-2">
-                                                <input type="text" name="{{ $kkk }}" value="{{ $cart_data }}">
+                                                <input type="text" class="product_qty" name="{{ $kkk }}" value="{{ $cart_data }}">
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="cart__price">${{ ($product[$kkk]['price'] - $product[$kkk]['spc']) * $cart_data }}</td>
+                                    <td class="cart__price">${{ $total[] = ($product[$kkk]['price'] - $product[$kkk]['spc']) * $cart_data }}</td>
                                     <td class="cart__close"><a href="{{ route('front.cart.remove' , $kkk) }}"><i class="fa fa-close"></i></a></td>
                                 </tr>
                                 @endforeach
@@ -65,7 +65,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn">
-                                <a href="#">Continue Shopping</a>
+                                <a href="{{ route('front.shop')  }}">Continue Shopping</a>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -80,8 +80,14 @@
                 <div class="cart__total">
                     <h6>Cart total</h6>
                     <ul>
-                        <li>Subtotal <span>$ 169.50</span></li>
-                        <li>Total <span>$ 169.50</span></li>
+                        @php 
+                            $payable=  array_sum($total);
+                            $round = round( $payable / 10) * 10 - 10;
+                            $discount = $payable - $round;
+                        @endphp
+                        <li>Subtotal <span>$ {{ $payable  }}</span></li>
+                        <li>Discount <span>$ {{ $discount }}</span></li>
+                        <li>Total <span>$ {{ $round }}</span></li>
                     </ul>
                     <a href="#" class="primary-btn">Proceed to checkout</a>
                 </div>
@@ -90,6 +96,14 @@
     </div>
 </section>
 
+<script>
+    $(document).on('keyup change click', '.product_qty,.inc,.dec', function(){
+        price = $(this).parent().parent().parent().parent().find('.product_price').text().replace('$','');
+        val = $(this).parent().parent().parent().parent().find('.product_qty').val()
+        totel = $(this).parent().parent().parent().parent().find('.cart__price').html( '$' +(price * val))
+        console.log($(this).val());
+    })
+</script>
 @endsection
 @section('home-script')
 @endsection

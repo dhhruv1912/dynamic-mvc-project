@@ -49,7 +49,7 @@ class MenuController extends Controller
                 'group'  => $request->post('menu_route_group'),
             );
             // Add Route
-            $this_new_route = "Route::any('/". $menu['route'] . "', '". $menu['controller'] . "@index')->name('". $menu['route_name'] . "');\n";
+            $this_new_route = "Route::any('/". $menu['route'] . "', '". str_replace('/','\\',$menu['controller']) . "@index')->name('". $menu['route_name'] . "');\n";
             $this_new_route .= "//".$menu['group']."//\n";
             $web_route = file_get_contents(base_path() . '\routes\web.php');
             $web_route = str_replace('//'.$menu['group'].'//',$this_new_route,$web_route);

@@ -1,10 +1,5 @@
 @extends('front-file')
 @section('front')
-<pre>
-    @if(isset($filter))
-    @php print_r($filter) @endphp
-    @endif
-</pre>
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
     <div class="container">
@@ -32,7 +27,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="shop__product__option__left">
-                                <p>Showing 1–{{ count($category) }} of {{ count($category) }} results</p>
+                                <p>Showing 1–{{ count($category) }} of {{ $category->total() }} results</p>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">

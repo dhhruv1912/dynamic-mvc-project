@@ -8,10 +8,22 @@ use App\Models\Setting;
 
 class SettingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $settings = new Setting;
         $settings = $settings;
+        if(isset($request->name)){
+            $data['name'] = $request->name;
+            $settings = $settings->Where('name', 'like', '%' . $request->name . '%');
+        }
+        if(isset($request->field_type)){
+            $data['field_type'] = $request->field_type;
+            $settings = $settings->Where('type', $request->field_type);
+        }
+        if(isset($request->show_select2) && $request->show_select2 == 1){
+            $data['show_select2'] = $request->show_select2;
+            $settings = $settings->Where('option', 'like', '%::%');
+        }
         foreach ($settings->get() as $id=>$setting){
             if(preg_match('/(?<=::)[^{]+/',$setting->option)){
                 $model = str_replace('::','',$setting->option);
